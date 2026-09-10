@@ -5,7 +5,7 @@ final class MockRepository: DataRepository {
     private var storedUsers: [User] = []
     private var storedItems: [LostFoundItem] = []
     private var storedClaims: [Claim] = []
-    private var storedNotifications: [NotificationItem] = []
+    private var storedNotifications: [AppNotification] = []
 
     init() {
         seed()
@@ -13,10 +13,10 @@ final class MockRepository: DataRepository {
 
     private func seed() {
         let student = User(
-            fullName: "Lawrence Student",
+            fullName: "Demo Student",
             email: "student@larping.edu",
             password: "123456",
-            universityID: "LU-2026-001",
+            universityID: "STU-2026-001",
             role: .student
         )
 
@@ -30,47 +30,13 @@ final class MockRepository: DataRepository {
 
         storedUsers = [student, employee]
 
-        let samples: [
-            (
-                String,
-                ItemCategory,
-                String,
-                ItemType,
-                String
-            )
-        ] = [
-            ("Black Wallet", .other, "Wallet", .found, "Library"),
-            ("iPhone", .electronics, "", .lost, "Computer Laboratory"),
-            ("Student ID", .ids, "", .lost, "Main Building"),
-            ("Black Backpack", .bags, "", .found, "Cafeteria"),
-            ("AirPods", .electronics, "", .found, "Gymnasium"),
-            ("House Keys", .keys, "", .lost, "Parking Area"),
-            ("Black Jacket", .clothing, "", .found, "Student Center"),
-            ("Laptop Charger", .electronics, "", .found, "Classroom Building")
+        storedItems = [
+            LostFoundItem(userID: student.id, itemName: "Black Wallet", category: .ids, location: "Main Library", date: Date(), description: "Black folding wallet with university cards.", type: .lost, status: .approved),
+            LostFoundItem(userID: employee.id, itemName: "AirPods Case", category: .electronics, location: "CCMS Hallway", date: Date(), description: "White charging case found near the hallway benches.", type: .found, status: .approved),
+            LostFoundItem(userID: student.id, itemName: "Blue Umbrella", category: .other, customCategory: "Umbrella", location: "Student Center", date: Date(), description: "Blue umbrella with a wooden handle.", type: .lost, status: .pending)
         ]
-
-        for (index, sample) in samples.enumerated() {
-            storedItems.append(
-                LostFoundItem(
-                    userID: student.id,
-                    itemName: sample.0,
-                    category: sample.1,
-                    customCategory: sample.2,
-                    location: sample.4,
-                    date: Calendar.current.date(
-                        byAdding: .day,
-                        value: -index,
-                        to: Date()
-                    ) ?? Date(),
-                    description: "Sample Lost & Found item for testing.",
-                    type: sample.3,
-                    status: .approved
-                )
-            )
-        }
     }
-
-    func users() -> [User] {
+    func fetchUsers() -> [User] {
         storedUsers
     }
 
@@ -86,7 +52,7 @@ final class MockRepository: DataRepository {
         storedUsers[index] = user
     }
 
-    func items() -> [LostFoundItem] {
+    func fetchItems() -> [LostFoundItem] {
         storedItems
     }
 
@@ -107,7 +73,7 @@ final class MockRepository: DataRepository {
         storedClaims.removeAll { $0.itemID == id }
     }
 
-    func claims() -> [Claim] {
+    func fetchClaims() -> [Claim] {
         storedClaims
     }
 
@@ -123,15 +89,15 @@ final class MockRepository: DataRepository {
         storedClaims[index] = claim
     }
 
-    func notifications() -> [NotificationItem] {
+    func fetchNotifications() -> [AppNotification] {
         storedNotifications
     }
 
-    func saveNotification(_ notification: NotificationItem) {
+    func saveNotification(_ notification: AppNotification) {
         storedNotifications.append(notification)
     }
 
-    func updateNotification(_ notification: NotificationItem) {
+    func updateNotification(_ notification: AppNotification) {
         guard let index = storedNotifications.firstIndex(where: { $0.id == notification.id }) else {
             return
         }
@@ -139,3 +105,4 @@ final class MockRepository: DataRepository {
         storedNotifications[index] = notification
     }
 }
+

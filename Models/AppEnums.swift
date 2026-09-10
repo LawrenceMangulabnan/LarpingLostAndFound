@@ -2,7 +2,7 @@ import Foundation
 
 enum UserRole: String, CaseIterable, Codable, Identifiable {
     case student = "Student"
-    case employee = "Employee"
+    case employee = "Lost & Found Employee"
 
     var id: String { rawValue }
 }
@@ -41,5 +41,12 @@ enum ClaimStatus: String, CaseIterable, Codable, Identifiable {
     case approved = "Claim Approved"
     case rejected = "Claim Rejected"
 
+    var id: String { rawValue }
+}
+
+enum BrowseSort: String, CaseIterable, Identifiable {
+    case newest = "Newest"
+    case oldest = "Oldest"
+    case nameAZ = "Name A-Z"
     var id: String { rawValue }
 }

@@ -2,32 +2,97 @@ import SwiftUI
 
 @main
 struct LarpingLostAndFoundApp: App {
-    @StateObject private var app = AppController()
+
+    @StateObject private var app =
+        AppController(
+            repository: MockRepository()
+        )
+
 
     var body: some Scene {
+
         WindowGroup {
+
             RootView()
                 .environmentObject(app)
                 .preferredColorScheme(.dark)
+                .tint(AppColors.accent)
         }
     }
 }
 
+
 struct RootView: View {
-    @EnvironmentObject var app: AppController
+
+    @EnvironmentObject private var app: AppController
+
 
     var body: some View {
+
         Group {
+
             if let user = app.currentUser {
-                if user.role == .student {
+
+                switch user.role {
+
+                case .student:
+
                     StudentShell()
-                } else {
+
+
+                case .employee:
+
                     EmployeeShell()
                 }
+
             } else {
+
                 LoginScreen()
             }
         }
-        .tint(AppTheme.crimson)
+        .background(
+            AppColors.background
+                .ignoresSafeArea()
+        )
+        .alert(
+            "Campus Lost & Found",
+            isPresented: Binding(
+
+                get: {
+
+                    app.errorMessage != nil ||
+                    app.successMessage != nil
+                },
+
+                set: { newValue in
+
+                    if !newValue {
+
+                        app.errorMessage = nil
+
+                        app.successMessage = nil
+                    }
+                }
+            )
+        ) {
+
+            Button(
+                "OK",
+                role: .cancel
+            ) {
+
+                app.errorMessage = nil
+
+                app.successMessage = nil
+            }
+
+        } message: {
+
+            Text(
+                app.errorMessage ??
+                app.successMessage ??
+                ""
+            )
+        }
     }
 }
