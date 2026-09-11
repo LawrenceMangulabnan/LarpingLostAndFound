@@ -12,8 +12,16 @@ struct HelpSupportScreen: View {
                 DisclosureGroup("Can I edit or delete my report?") { Text("Open My Items, select your report, then save changes or confirm deletion. Editing an approved or rejected report requires verification again.") }
             }
             Section("Contact") {
-                Button("Email Lost & Found", systemImage: "envelope") { contact("mailto:lostandfound@larping.edu") }
-                Button("Call Support", systemImage: "phone") { contact("tel:+630000000000") }
+                Button {
+                    contact("mailto:lostandfound@larping.edu")
+                } label: {
+                    Label("Email Lost & Found", systemImage: "envelope")
+                }
+                Button {
+                    contact("tel:+630000000000")
+                } label: {
+                    Label("Call Support", systemImage: "phone")
+                }
                 Text("These are prototype contact details for Larping University.").font(.caption)
             }
         }.appBackground().navigationTitle("Help & Support")

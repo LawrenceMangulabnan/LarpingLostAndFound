@@ -176,7 +176,7 @@ final class AppController: ObservableObject {
     }
     func userName(for id: UUID) -> String { users.first(where: { $0.id == id })?.fullName ?? "Unknown user" }
     func itemName(for id: UUID) -> String { items.first(where: { $0.id == id })?.itemName ?? "Deleted item" }
-    func claims(for id: UUID) -> [Claim] { claims.filter { $0.studentID == id }.sorted { $0.createdAt > $1.createdAt } }
-    func notifications(for id: UUID) -> [AppNotification] { notifications.filter { $0.userID == id }.sorted { $0.createdAt > $1.createdAt } }
+    func claims(for id: UUID) -> [Claim] { self.claims.filter { $0.studentID == id }.sorted { $0.createdAt > $1.createdAt } }
+    func notifications(for id: UUID) -> [AppNotification] { self.notifications.filter { $0.userID == id }.sorted { $0.createdAt > $1.createdAt } }
     func unreadCount(for id: UUID) -> Int { notifications(for: id).filter { !$0.isRead }.count }
 }

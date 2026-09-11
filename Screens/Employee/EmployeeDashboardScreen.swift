@@ -7,7 +7,7 @@ struct EmployeeDashboardScreen: View {
             VStack(alignment: .leading, spacing: 18) {
                 Text("Dashboard").font(.largeTitle.bold())
                 Text("Welcome, \(app.currentUser?.fullName ?? "Staff")")
-                NavigationLink("Notifications", systemImage: "bell") { NotificationsScreen() }
+                NavigationLink { NotificationsScreen() } label: { Label("Notifications", systemImage: "bell") }
                 LazyVGrid(columns: [GridItem(.flexible()), GridItem(.flexible())], spacing: 12) {
                     NavigationLink { EmployeeReportsScreen(initialStatus: .pending) } label: {
                         StatCard(title: "Pending Reports", value: app.items.filter { $0.status == .pending }.count, icon: "doc.badge.clock")

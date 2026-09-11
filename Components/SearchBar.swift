@@ -7,7 +7,12 @@ struct SearchBar: View {
             Image(systemName: "magnifyingglass")
             TextField("Search name, location, category", text: $text)
             if !text.isEmpty {
-                Button("Clear", systemImage: "xmark.circle.fill") { text = "" }.labelStyle(.iconOnly)
+                Button {
+                    text = ""
+                } label: {
+                    Image(systemName: "xmark.circle.fill")
+                }
+                .accessibilityLabel("Clear")
             }
         }.padding().background(AppColors.card).clipShape(RoundedRectangle(cornerRadius: 14))
     }

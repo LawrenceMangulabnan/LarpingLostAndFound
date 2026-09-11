@@ -6,7 +6,7 @@ struct CameraImagePicker: UIViewControllerRepresentable {
     @Binding var imageData: Data?
 
     func makeCoordinator() -> Coordinator {
-        Coordinator(self)
+        Coordinator()
     }
 
     func makeUIViewController(
@@ -24,17 +24,17 @@ struct CameraImagePicker: UIViewControllerRepresentable {
     func updateUIViewController(
         _ uiViewController: UIImagePickerController,
         context: Context
-    ) {}
+    ) {
+        context.coordinator.imageData = $imageData
+        context.coordinator.onDismiss = { dismiss() }
+    }
 
     final class Coordinator: NSObject,
         UINavigationControllerDelegate,
         UIImagePickerControllerDelegate {
 
-        let parent: CameraImagePicker
-
-        init(_ parent: CameraImagePicker) {
-            self.parent = parent
-        }
+        var imageData: Binding<Data?> = .constant(nil)
+        var onDismiss: () -> Void = {}
 
         func imagePickerController(
             _ picker: UIImagePickerController,
@@ -47,16 +47,15 @@ struct CameraImagePicker: UIViewControllerRepresentable {
                 ?? (info[.originalImage] as? UIImage)
 
             if let data = image?.jpegData(compressionQuality: 0.8), let prepared = ReportPhoto.prepare(data) {
-                parent.imageData = prepared
+                imageData.wrappedValue = prepared
             }
-            parent.dismiss()
+            onDismiss()
         }
 
         func imagePickerControllerDidCancel(
             _ picker: UIImagePickerController
         ) {
-            parent.dismiss()
+            onDismiss()
         }
     }
 }
-

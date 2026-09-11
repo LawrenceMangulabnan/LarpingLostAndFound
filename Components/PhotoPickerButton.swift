@@ -44,7 +44,7 @@ struct PhotoPickerButton: View {
                     .background(AppColors.card)
                     .clipShape(RoundedRectangle(cornerRadius: 14))
             }
-            .task(id: selectedPhoto) {
+            .task(id: selectedPhoto?.itemIdentifier) {
                 guard let selectedPhoto else { return }
                 isLoading = true
                 defer { if !Task.isCancelled { isLoading = false } }

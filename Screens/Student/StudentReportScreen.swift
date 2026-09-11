@@ -15,8 +15,10 @@ struct StudentReportScreen: View {
             Section("Photo") {
                 PhotoPickerButton(imageData: $draft.photoData, isLoading: $photoLoading)
                     .id(photoSession)
-                Button("Take Photo", systemImage: "camera") {
+                Button {
                     Task { await openCamera() }
+                } label: {
+                    Label("Take Photo", systemImage: "camera")
                 }.disabled(photoLoading)
                 if draft.photoData != nil { Button("Remove Photo", role: .destructive) {
                     photoSession = UUID(); photoLoading = false; draft.photoData = nil

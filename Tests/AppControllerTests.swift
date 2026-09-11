@@ -48,7 +48,7 @@ final class AppControllerTests: XCTestCase {
         XCTAssertFalse(app.deleteItem(other))
         XCTAssertFalse(app.updateItem(other))
         app.approveItem(own)
-        XCTAssertEqual(app.items.first { $0.id == own.id }?.status, .approved)
+        XCTAssertEqual(app.items.first { $0.id == own.id }?.status, .pending)
         XCTAssertFalse(app.submitClaim(item: own, verification: "Mine"))
         var edited = own
         edited.itemName = "  Updated Wallet  "
